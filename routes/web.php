@@ -14,3 +14,11 @@
 $router->get('/', function () use ($router) {
     return "MuseumTech API v1.0";
 });
+
+$router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {
+    $router->get('reservations',  ['uses' => 'ReservationController@index']);
+    $router->get('reservations/{id}', ['uses' => 'ReservationController@show']);
+    $router->post('reservations', ['middleware' => 'auth:create:reservations', 'uses' => 'ReservationController@create']);
+    $router->delete('reservations/{id}', ['middleware' => 'auth:delete:reservations', 'uses' => 'ReservationController@delete']);
+    $router->put('reservations/{id}', ['middleware' => 'auth:update:reservations', 'uses' => 'ReservationController@update']);
+});
